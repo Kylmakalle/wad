@@ -174,14 +174,14 @@ def main():
   sess.headers.update({"User-Agent": cfg["UA"]})
   
   if args.all:
-    domain = re.findall("^https?:\/\/m?\.?vk\.com\/([a-zA-Z0-9]+)$", args.url)
+    domain = re.findall("^https?:\/\/(?:m\.)?vk\.com\/([a-zA-Z0-9]+)$", args.url)
     if domain:
       sess = VK_auth(sess, cfg["email"], cfg["password"])
       download_wall_audios(sess, domain[0], cfg["download_dir"])
     else:
       logging.error("Incorrect URL")
   elif args.post:
-    post_id = re.findall("^https?:\/\/m?\.?vk\.com\/wall(-?[0-9]+_[0-9]+)$", args.url)
+    post_id = re.findall("^https?:\/\/(?:m\.)?vk\.com\/wall(-?[0-9]+_[0-9]+)$", args.url)
     if post_id:
       sess = VK_auth(sess, cfg["email"], cfg["password"])
       download_post_audios(sess, post_id[0], cfg["download_dir"])
