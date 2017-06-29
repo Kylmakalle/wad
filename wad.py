@@ -27,6 +27,17 @@ def VK_auth(sess, email, password):
 
   if "login.vk.com/?act=logout_mobile" in sess.get("https://m.vk.com/login").text:
     return sess
+  elif '/login?act=authcheck_code' in sess.get("https://m.vk.com/login?act=authcheck").text:
+      act2 = html.fromstring(resp.text).xpath("//form/@action")
+      if not act2:
+          logging.error("Verification form not found")
+          raise SystemExit
+      act2 = act2[0]
+
+      print('Input Verification Code')
+      code = input()
+      resp2 = sess.post('https://login.vk.com/?act=' + act2[1:], data={"code": code})
+      return sess
   else:
     logging.error("Auth failed")
     raise SystemExit
@@ -172,7 +183,7 @@ def main():
 
   sess = r.Session()
   sess.headers.update({"User-Agent": cfg["UA"]})
-  
+
   if args.all:
     domain = re.findall("^https?:\/\/(?:m\.)?vk\.com\/([a-zA-Z0-9]+)$", args.url)
     if domain:
