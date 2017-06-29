@@ -36,7 +36,7 @@ def VK_auth(sess, email, password):
 
       print('Input Verification Code')
       code = input()
-      resp2 = sess.post('https://login.vk.com/?act=' + act2[1:], data={"code": code})
+      resp2 = sess.post('https://m.vk.com' + act2, data={"code": code})
       return sess
   else:
     logging.error("Auth failed")
